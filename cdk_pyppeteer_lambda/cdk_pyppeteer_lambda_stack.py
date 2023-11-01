@@ -1,19 +1,18 @@
 from aws_cdk import (
-    # Duration,
-    Stack,
-    # aws_sqs as sqs,
+    core,
+    aws_lambda as _lambda,
+    aws_lambda_python as python_lambda
 )
-from constructs import Construct
 
-class CdkPyppeteerLambdaStack(Stack):
+class CdkPyppeteerLambdaStack(core.Stack):
 
-    def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
-        super().__init__(scope, construct_id, **kwargs)
+    def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
+        super().__init__(scope, id, **kwargs)
 
-        # The code that defines your stack goes here
-
-        # example resource
-        # queue = sqs.Queue(
-        #     self, "CdkPyppeteerLambdaQueue",
-        #     visibility_timeout=Duration.seconds(300),
-        # )
+        # Define the Lambda function
+        lambda_function = python_lambda.PythonFunction(
+            self, 'PyppeteerLambda',
+            entry='lambda_function',
+            handler='lambda_handler.lambda_handler',
+            runtime=_lambda.Runtime.PYTHON_3_9
+        )
